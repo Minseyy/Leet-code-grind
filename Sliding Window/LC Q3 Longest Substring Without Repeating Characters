@@ -1,0 +1,28 @@
+Link to Question: https://leetcode.com/problems/longest-substring-without-repeating-characters/
+
+Code: 
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        left = max_len = 0
+        char_set = set()
+
+        for right in range(len(s)):
+            while s[right] in char_set:
+                char_set.remove(s[left])
+                left += 1
+
+            curr_len = right - left + 1
+            char_set.add(s[right])
+            max_len = max(max_len, curr_len)
+
+        return max_len
+
+        
+
+# Start from the first character, store all characteres encountered in a List
+# If any character from the list is in the next character
+# Return length of the stored char list
