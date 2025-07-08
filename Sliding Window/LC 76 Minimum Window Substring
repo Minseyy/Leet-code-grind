@@ -1,0 +1,58 @@
+Link to Q: https://leetcode.com/problems/minimum-window-substring/description/?envType=problem-list-v2&envId=sliding-window
+
+Code:
+from collections import Counter
+
+class Solution(object):
+    def minWindow(self, s, t):
+        """
+        :type s: str
+        :type t: str
+        :rtype: str
+        """
+        # iterate over s(i), keep encountered 
+        # if we get all encountered len = len t
+        # return the min len of (t - i)
+
+        if not s or not t:
+            return ""
+                
+
+        required = Counter(t) #<-stores no of occurence of each char in t (dictionary)
+        window = {}    # <- characters in current window of s
+        have = 0
+        need = len(required)
+
+        res = ""
+        res_len = float('inf')
+        left = 0
+
+        for right in range(len(s)):
+            char = s[right]
+
+            if char in required:
+                # .get(key, default) checks if the key is in the dictionary.
+                # Yes -> return value
+                # No -> create a key and store initial value 0
+                window[char] = window.get(char, 0) + 1
+
+                # freq in window matches whats needed in required == fully matched 
+                if window[char] == required[char]:
+                    have += 1
+
+            # When we have all required characters, enter loop when all required in current window
+            while have == need:
+                if (right - left + 1) < res_len:
+                    res = s[left:right + 1]
+                    res_len = right - left + 1
+
+                left_char = s[left]
+
+                # Leftmost character is required
+                if left_char in required:
+                    window[left_char] -= 1    # Shrink the window
+                    if window[left_char] < required[left_char]:
+                        have -= 1
+                left += 1  # Move the window to left
+
+        return res
