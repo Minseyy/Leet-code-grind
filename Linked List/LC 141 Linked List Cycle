@@ -1,0 +1,51 @@
+Link to Q: https://leetcode.com/problems/linked-list-cycle/description/
+
+Code:
+Solution 1: (Harder way - takes more space)
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def hasCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: bool
+        """
+        current = head
+        encountered = []
+
+        return self.hasCycle_aux(current, encountered)
+
+    def hasCycle_aux(self, current, encountered):
+        if current == None:
+            return False
+
+        elif current.next in encountered:
+            return True
+
+        encountered.append(current)
+        return self.hasCycle_aux(current.next, encountered)
+
+Solution 2: 
+-  Floyd's Tortoise and Hare algorithm, which uses two pointers moving at different speeds.
+-The algorithm is to start two pointers, slow and fast from head of linked list. 
+- We move slow one node at a time and fast two nodes at a time. 
+- If there is a loop, then they will definitely meet
+
+class Solution(object):
+    
+    def hasCycle(self, head):
+        slow = head
+        fast = head
+
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+
+            if slow == fast:
+                return True
+
+        return False
