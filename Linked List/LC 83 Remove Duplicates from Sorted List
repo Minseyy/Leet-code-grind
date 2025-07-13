@@ -8,13 +8,17 @@ class Solution(object):
         :type head: Optional[ListNode]
         :rtype: Optional[ListNode]
         """
+        mySet = set()
         current = head
+        prev = None
 
-        while current and current.next:
-            if current.val == current.next.val:
-                current.next = current.next.next
+        while current:
+            if current.val in mySet:
+                prev.next = current.next
             else:
-                current = current.next
+                mySet.add(current.val)
+                prev =current
+            current = current.next
 
         return head
 
